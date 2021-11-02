@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { SafeAreaView } from "react-native";
+import { useSelector } from 'react-redux'
 import {
   StyleSheet,
   View,
@@ -12,7 +13,7 @@ import {
 } from "react-native";
 
 // components
-import BottomBar from "../../components/BottomBar_Documentation";
+import BottomBar from "./components/BottomBar_Documentation";
 
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
@@ -49,14 +50,14 @@ const ProjectDocumentation = ({ navigation }) => {
       <View style={{ flexDirection: "column", top: -5 }}>
         <Image
           style={styles.greenBackground}
-          source={require("../../../assets/IndividualStepAddition_Images/green_background.png")}
+          source={require("../assets/IndividualStepAddition_Images/green_background.png")}
         />
       </View>
 
       <View style={{ flexDirection: "column" }}>
         <Image
           style={styles.logo}
-          source={require("../../../assets/IndividualStepAddition_Images/tomlogo.png")}
+          source={require("../assets/IndividualStepAddition_Images/tomlogo.png")}
         />
       </View>
 
@@ -120,7 +121,7 @@ const ProjectDocumentation = ({ navigation }) => {
         >
           <Image
             style={styles.addMaterials}
-            source={require("../../../assets/projects-11/addmaterials.png")}
+            source={require("../assets/projects-11/addmaterials.png")}
           />
         </TouchableOpacity>
 
@@ -142,7 +143,7 @@ const ProjectDocumentation = ({ navigation }) => {
         >
           <Image
             style={styles.plus}
-            source={require("../../../assets/projects-11/plus.png")}
+            source={require("../assets/projects-11/plus.png")}
           />
         </TouchableOpacity>
 
@@ -164,7 +165,7 @@ const ProjectDocumentation = ({ navigation }) => {
         >
           <Image
             style={styles.plus}
-            source={require("../../../assets/projects-11/plus.png")}
+            source={require("../assets/projects-11/plus.png")}
           />
         </TouchableOpacity>
 

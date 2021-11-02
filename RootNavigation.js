@@ -1,5 +1,8 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
+import React from "react";
+import ProjectDocumentation from "./src/ProjectDocumentation";
+
 
 const RootNavigation = () => {
   const Documentation = createStackNavigator();
@@ -7,7 +10,7 @@ const RootNavigation = () => {
     <Documentation.Navigator>
       <Documentation.Screen
         name="Documentation"
-        component={DocumentationScreen}
+        component={ProjectDocumentation}
       />
     </Documentation.Navigator>
   );
