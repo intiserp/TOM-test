@@ -9,7 +9,9 @@ import {
   TouchableOpacity,
   TextInput,
   FlatList,
+  Button,
 } from "react-native";
+import { ScrollView } from "react-native-gesture-handler";
 
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
@@ -23,7 +25,31 @@ const ProjectDocumentation = ({ navigation }) => {
   const [steps, setSteps] = useState([]);
   const [billOfMaterials, setBillOfMaterials] = useState([]);
 
+  // adding NEW STEPS!
   const individualStepAddition = () => {
+    console.log("new step");
+    setSteps(
+      steps.concat(
+        // <View
+        //   style={{
+        //     backgroundColor: "white",
+        //     width: windowWidth * 0.79,
+        //     height: 37,
+        //     borderRadius: 11,
+        //     shadowOffset: { width: 0, height: 2 },
+        //     shadowOpacity: 0.1,
+        //     shadowRadius: 2,
+        //     marginTop: 5,
+        //   }}
+        // >
+        <TextInput
+          placeholder="Step Description"
+          style={styles.stepDescription}
+          // onChangeText={(text) => setName(text)}
+        />
+        // </View>
+      )
+    );
     return;
   };
 
@@ -188,47 +214,28 @@ const ProjectDocumentation = ({ navigation }) => {
           />
         </TouchableOpacity>
 
-        {/* <Image style={styles.stepName} source={require("../../assets/projects-11/stepname.png")} /> */}
-        {/* {projStepsDisplay} */}
-
         {steps.length > 0 ? (
           <View
             style={{
-              left: windowWidth * 0.07,
-              top: -windowHeight * 0.125,
+              // left: windowWidth * 0.07,
+              top: -windowHeight * 0.14,
               width: windowWidth,
               height: windowHeight,
             }}
           >
-            <FlatList
-              data={projSteps}
-              renderItem={({ item }) => {
-                return (
-                  <TouchableOpacity onPress={individualStepAddition}>
-                    <Text
-                      style={{
-                        fontSize: 18,
-                        color: "black",
-                        fontWeight: "bold",
-                      }}
-                    >
-                      {item.name} {item.description}
-                    </Text>
-                  </TouchableOpacity>
-                );
-              }}
-              extraData={projSteps}
-            />
+            <View style={{ flex: 1 }}>
+              <FlatList
+                scrollsToTop={true}
+                data={steps}
+                contentContainerStyle={{ marginTop: 10, paddingBottom: 10 }}
+                renderItem={({ item }) => {
+                  return <View style={{ marginTop: 10 }}>{item}</View>;
+                }}
+              />
+            </View>
           </View>
         ) : (
-          <View
-            style={{
-              left: windowWidth * 0.07,
-              top: -windowHeight * 0.125,
-              width: windowWidth,
-              height: windowHeight,
-            }}
-          ></View>
+          <View></View>
         )}
       </View>
     </SafeAreaView>
@@ -294,9 +301,9 @@ const styles = StyleSheet.create({
 
   greenBackground: {
     width: windowWidth,
-    height: windowHeight * 0.4,
+    height: windowHeight * 0.5,
     left: 0,
-    top: -windowHeight * 0.034,
+    top: -windowHeight * 0.03,
     position: "relative",
     flexDirection: "row",
   },
@@ -305,7 +312,7 @@ const styles = StyleSheet.create({
     width: windowWidth * 0.18,
     height: windowHeight * 0.04,
     left: windowWidth * 0.412,
-    top: -windowHeight * 0.38,
+    top: -windowHeight * 0.45,
     position: "relative",
     flexDirection: "row",
   },
@@ -333,7 +340,7 @@ const styles = StyleSheet.create({
 
   projectNameAndEtc: {
     left: 0,
-    top: -windowHeight * 0.055,
+    top: -windowHeight * 0.17,
     height: windowHeight * 0.27,
   },
 
@@ -370,9 +377,9 @@ const styles = StyleSheet.create({
 
   whiteBackground: {
     width: windowWidth,
-    height: windowHeight * 0.57,
+    height: windowHeight * 0.78,
     left: 0,
-    top: -windowHeight * 0.275,
+    top: -windowHeight * 0.4,
     position: "absolute",
     flexDirection: "row",
     backgroundColor: "white",
@@ -389,5 +396,17 @@ const styles = StyleSheet.create({
     top: windowHeight * 0.08,
     alignItems: "center",
     justifyContent: "center",
+  },
+
+  stepDescription: {
+    left: windowWidth * 0.07,
+    top: -windowHeight * 0.19,
+    width: windowWidth * 0.86,
+    fontSize: 18,
+    color: "black",
+    borderColor: "#DBDBDB",
+    borderWidth: 1,
+    borderRadius: 10,
+    padding: 10,
   },
 });
