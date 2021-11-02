@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { SafeAreaView } from "react-native";
-import { useSelector } from 'react-redux'
 import {
   StyleSheet,
   View,
@@ -12,36 +11,22 @@ import {
   FlatList,
 } from "react-native";
 
-// components
-import BottomBar from "./components/BottomBar_Documentation";
-
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
 
 const ProjectDocumentation = ({ navigation }) => {
-  const [name, setName] = useState(useSelector((state) => state.project.name));
-  const [description, setDescription] = useState(
-    useSelector((state) => state.project.description)
-  );
-  const [problem, setProblem] = useState(
-    useSelector((state) => state.project.problem)
-  );
-  const [solution, setSolution] = useState(
-    useSelector((state) => state.project.solution)
-  );
-  const [history, setHistory] = useState(
-    useSelector((state) => state.project.history)
-  );
-  const [steps, setSteps] = useState(
-    useSelector((state) => state.project.steps)
-  );
-  const [developers, setDevelopers] = useState(
-    useSelector((state) => state.project.developers)
-  );
-  const [billOfMaterials, setBillOfMaterials] = useState(
-    useSelector((state) => state.project.billOfMaterials)
-  );
+  const [name, setName] = useState("");
+  const [purpose, setPurpose] = useState("");
+  const [description, setDescription] = useState("");
+  const [history, setHistory] = useState("");
+  const [feedback, setFeedback] = useState("");
+  const [steps, setSteps] = useState([]);
+  const [billOfMaterials, setBillOfMaterials] = useState([]);
   const [lastUpdated, setLastUpdated] = useState(new Date());
+
+  const individualStepAddition = () => {
+    return;
+  };
 
   return (
     <SafeAreaView
@@ -61,10 +46,6 @@ const ProjectDocumentation = ({ navigation }) => {
         />
       </View>
 
-      <TouchableOpacity style={styles.addPictureBox} onPress={cameraHandler}>
-        {imageDisplay}
-      </TouchableOpacity>
-
       <View style={{ flexDirection: "column" }}>
         <View style={styles.whiteBackground} />
       </View>
@@ -79,7 +60,14 @@ const ProjectDocumentation = ({ navigation }) => {
 
         <TouchableOpacity
           style={styles.purposeInput}
-          onPress={() => navigation.navigate("PurposeOfDevicePage")}
+          onPress={() =>
+            navigation.navigate("TextBoxPage", {
+              fieldName: "Purpose of the device",
+              placeholder: "Explain the purpose of the device here",
+              value: purpose,
+              setValue: setPurpose,
+            })
+          }
         >
           <Text style={{ fontSize: 17, color: "#C0C0C0" }}>
             Purpose of Device
@@ -91,7 +79,15 @@ const ProjectDocumentation = ({ navigation }) => {
 
         <TouchableOpacity
           style={styles.purposeInput}
-          onPress={() => navigation.navigate("PhysicalDescriptionPage")}
+          onPress={() =>
+            navigation.navigate("TextBoxPage", {
+              fieldName: "Physical Description",
+              placeholder:
+                "Explain the physical description of the device here",
+              value: description,
+              setValue: setDescription,
+            })
+          }
         >
           <Text style={{ fontSize: 17, color: "#C0C0C0" }}>
             Physical Description
@@ -103,11 +99,35 @@ const ProjectDocumentation = ({ navigation }) => {
 
         <TouchableOpacity
           style={styles.purposeInput}
-          onPress={() => navigation.navigate("HistoryOfDevelopmentPage")}
+          onPress={() =>
+            navigation.navigate("TextBoxPage", {
+              fieldName: "History of Development",
+              placeholder: "Enter the history of development here",
+              value: history,
+              setValue: setHistory,
+            })
+          }
         >
           <Text style={{ fontSize: 17, color: "#C0C0C0" }}>
             History Of Development
           </Text>
+        </TouchableOpacity>
+        <View style={{ top: -windowHeight * 0.16, marginBottom: 17 }}>
+          <View style={styles.thinBar}></View>
+        </View>
+
+        <TouchableOpacity
+          style={styles.purposeInput}
+          onPress={() =>
+            navigation.navigate("TextBoxPage", {
+              fieldName: "User Feedback",
+              placeholder: "Enter the user feedback here",
+              value: feedback,
+              setValue: setFeedback,
+            })
+          }
+        >
+          <Text style={{ fontSize: 17, color: "#C0C0C0" }}>User Feedback</Text>
         </TouchableOpacity>
         <View style={{ top: -windowHeight * 0.16, marginBottom: 17 }}>
           <View style={styles.thinBar}></View>
@@ -212,9 +232,6 @@ const ProjectDocumentation = ({ navigation }) => {
           ></View>
         )}
       </View>
-      <View style={styles.bottombar}>
-        <BottomBar />
-      </View>
     </SafeAreaView>
   );
 };
@@ -222,11 +239,6 @@ const ProjectDocumentation = ({ navigation }) => {
 export default ProjectDocumentation;
 
 const styles = StyleSheet.create({
-  bottombar: {
-    bottom: -20,
-    width: "100%",
-  },
-
   item: {
     padding: 10,
     fontSize: 18,
