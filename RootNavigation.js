@@ -3,6 +3,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import React from "react";
 import ProjectDocumentation from "./src/ProjectDocumentation";
 import TextBoxPage from "./src/TextBoxPage";
+import { StepsProvider } from "./src/StepsContext";
 
 const RootNavigation = () => {
   const Documentation = createStackNavigator();
@@ -18,7 +19,9 @@ const RootNavigation = () => {
 
   return (
     <NavigationContainer>
-      <DocumentationStack />
+      <StepsProvider>
+        <DocumentationStack />
+      </StepsProvider>
     </NavigationContainer>
   );
 };

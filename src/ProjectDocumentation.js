@@ -22,7 +22,6 @@ const ProjectDocumentation = ({ navigation }) => {
   const [feedback, setFeedback] = useState("");
   const [steps, setSteps] = useState([]);
   const [billOfMaterials, setBillOfMaterials] = useState([]);
-  const [lastUpdated, setLastUpdated] = useState(new Date());
 
   const individualStepAddition = () => {
     return;
