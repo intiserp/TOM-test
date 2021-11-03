@@ -170,7 +170,7 @@ const ProjectDocumentation = ({ navigation }) => {
           />
         </TouchableOpacity>
 
-        <Text
+        {/* <Text
           style={{
             left: windowWidth * 0.07,
             top: -windowHeight * 0.125,
@@ -190,7 +190,7 @@ const ProjectDocumentation = ({ navigation }) => {
             style={styles.plus}
             source={require("../assets/projects-11/plus.png")}
           />
-        </TouchableOpacity>
+        </TouchableOpacity> */}
 
         <Text
           style={{
@@ -220,14 +220,14 @@ const ProjectDocumentation = ({ navigation }) => {
               // left: windowWidth * 0.07,
               top: -windowHeight * 0.14,
               width: windowWidth,
-              height: windowHeight,
+              height: windowHeight * .3,
             }}
           >
             <View style={{ flex: 1 }}>
               <FlatList
                 scrollsToTop={true}
                 data={steps}
-                contentContainerStyle={{ marginTop: 10, paddingBottom: 10 }}
+                contentContainerStyle={{ marginTop: 170, paddingBottom: 10 }}
                 renderItem={({ item }) => {
                   return <View style={{ marginTop: 10 }}>{item}</View>;
                 }}
