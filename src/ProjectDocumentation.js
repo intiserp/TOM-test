@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { SafeAreaView } from "react-native";
+import React, { useState, useEffect, useCallback } from "react";
+import { SafeAreaView, Touchable } from "react-native";
 import {
   StyleSheet,
   View,
@@ -12,6 +12,10 @@ import {
   Button,
 } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
+
+import DraggableFlatList, {
+  RenderItemParams,
+} from "react-native-draggable-flatlist";
 
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
@@ -30,27 +34,42 @@ const ProjectDocumentation = ({ navigation }) => {
     console.log("new step");
     setSteps(
       steps.concat(
-        // <View
-        //   style={{
-        //     backgroundColor: "white",
-        //     width: windowWidth * 0.79,
-        //     height: 37,
-        //     borderRadius: 11,
-        //     shadowOffset: { width: 0, height: 2 },
-        //     shadowOpacity: 0.1,
-        //     shadowRadius: 2,
-        //     marginTop: 5,
-        //   }}
-        // >
-        <TextInput
-          placeholder="Step Description"
-          style={styles.stepDescription}
-          // onChangeText={(text) => setName(text)}
-        />
-        // </View>
+        <View style={{ flexDirection: "row" }}>
+          {/* <View
+            style={{
+              backgroundColor: "black",
+              width: 400,
+              height: 40,
+              top: -windowHeight * 0.18,
+              left: 15,
+              fontSize: 20,
+            }}
+          ></View> */}
+
+          {/* 'DRAG' must be pressed to move around the step */}
+          <Text style={{ top: -windowHeight * 0.18, left: 15, fontSize: 17 }}>
+            DRAG
+          </Text>
+          <TextInput
+            placeholder="Step Description"
+            style={styles.stepDescription}
+            // onChangeText={(text) => setName(text)}
+          />
+        </View>
       )
     );
     return;
+  };
+
+  // rendering each step and making them touchable
+  // already tried using useCallback
+  const renderItem = ({ item, index, drag, isActive }) => {
+    // onLongPress={drag}
+    return (
+      <TouchableOpacity onPressIn={drag} style={{ marginTop: 10 }}>
+        {item}
+      </TouchableOpacity>
+    );
   };
 
   return (
@@ -170,28 +189,6 @@ const ProjectDocumentation = ({ navigation }) => {
           />
         </TouchableOpacity>
 
-        {/* <Text
-          style={{
-            left: windowWidth * 0.07,
-            top: -windowHeight * 0.125,
-            fontSize: 18,
-            color: "black",
-            fontWeight: "bold",
-          }}
-        >
-          BrainStorming & Ideation Notes
-        </Text>
-
-        <TouchableOpacity
-          style={styles.plusBox}
-          onPress={individualStepAddition}
-        >
-          <Image
-            style={styles.plus}
-            source={require("../assets/projects-11/plus.png")}
-          />
-        </TouchableOpacity> */}
-
         <Text
           style={{
             left: windowWidth * 0.07,
@@ -214,29 +211,35 @@ const ProjectDocumentation = ({ navigation }) => {
           />
         </TouchableOpacity>
 
-        {steps.length > 0 ? (
-          <View
-            style={{
-              // left: windowWidth * 0.07,
-              top: -windowHeight * 0.14,
-              width: windowWidth,
-              height: windowHeight * .3,
-            }}
-          >
-            <View style={{ flex: 1 }}>
-              <FlatList
+        <View
+          style={{
+            // left: windowWidth * 0.07,
+            top: -windowHeight * 0.14,
+            width: windowWidth,
+            height: windowHeight * 0.3,
+          }}
+        >
+          <View style={{ flex: 1 }}>
+            {/* <FlatList
                 scrollsToTop={true}
                 data={steps}
                 contentContainerStyle={{ marginTop: 170, paddingBottom: 10 }}
                 renderItem={({ item }) => {
                   return <View style={{ marginTop: 10 }}>{item}</View>;
                 }}
-              />
-            </View>
+              /> */}
+            {/* Draggable flat list here  */}
+            <DraggableFlatList
+              scrollsToTop={true}
+              contentContainerStyle={{ marginTop: 170, paddingBottom: 10 }}
+              data={steps}
+              renderItem={renderItem}
+              keyExtractor={(item, index) => index.toString()}
+              // this is where the steps array is updated....
+              onDragEnd={({ steps }) => setSteps(steps)}
+            />
           </View>
-        ) : (
-          <View></View>
-        )}
+        </View>
       </View>
     </SafeAreaView>
   );
