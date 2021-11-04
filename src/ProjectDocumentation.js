@@ -184,7 +184,7 @@ const ProjectDocumentation = ({ navigation }) => {
         </TouchableOpacity>
       </View>
 
-      <View>
+      <View style={{flex: 1}}>
         <FlatList
           scrollsToTop={true}
           data={steps.sort((a, b) => a.order - b.order)}
