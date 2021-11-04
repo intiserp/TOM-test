@@ -28,6 +28,7 @@ const ProjectDocumentation = ({ navigation }) => {
   const [feedback, setFeedback] = useState("");
   const [steps, setSteps] = useState([]);
   const [billOfMaterials, setBillOfMaterials] = useState([]);
+  const [indStep, setIndStep] = useState("");
 
   // adding NEW STEPS!
   const individualStepAddition = () => {
@@ -47,14 +48,15 @@ const ProjectDocumentation = ({ navigation }) => {
           ></View> */}
 
           {/* 'DRAG' must be pressed to move around the step */}
+
           <Text style={{ top: -windowHeight * 0.18, left: 15, fontSize: 17 }}>
             DRAG
           </Text>
-          <TextInput
-            placeholder="Step Description"
-            style={styles.stepDescription}
-            // onChangeText={(text) => setName(text)}
-          />
+          <TouchableOpacity
+            onPress={navigate.navigate("IndividualStepAddition")}
+          >
+            <Text>Step haha</Text>
+          </TouchableOpacity >
         </View>
       )
     );
@@ -210,6 +212,23 @@ const ProjectDocumentation = ({ navigation }) => {
             source={require("../assets/projects-11/plus.png")}
           />
         </TouchableOpacity>
+
+        <TouchableOpacity
+          style={styles.purposeInput}
+          onPress={() =>
+            navigation.navigate("TextBoxPage", {
+              fieldName: "Individual Step Addition",
+              placeholder: "Add Step",
+              value: indStep,
+              setValue: setIndStep,
+            })
+          }
+        >
+          <Text style={{ fontSize: 17, color: "#C0C0C0" }}>Individual Step Addition</Text>
+        </TouchableOpacity>
+        <View style={{ top: -windowHeight * 0.16, marginBottom: 17 }}>
+          <View style={styles.thinBar}></View>
+        </View>
 
         <View
           style={{
