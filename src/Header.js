@@ -23,7 +23,8 @@ const Header = (props) => {
 const styles = StyleSheet.create({
   headerContainer: {
     width: "100%",
-    backgroundColor: "rgba(52, 52, 52, 0.0)", // the last paratmer is set to 0.0 for transpaerency
+    // bg color should be white with full transparent
+    backgroundColor: `rgba(255,255,255,0)`,
     justifyContent: "flex-start",
   },
 });

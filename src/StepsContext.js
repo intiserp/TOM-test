@@ -7,19 +7,19 @@ export function useSteps() {
 }
 
 export function StepsProvider({ children }) {
-  const [allSteps, setAllSteps] = useState([]);
+  const [steps, setSteps] = useState([]);
 
   function addStep(step) {
-    setAllSteps((allSteps) => [...allSteps, step]);
+    setSteps((steps) => [...steps, step]);
   }
 
   function removeStep(stepId) {
-    setAllSteps((allSteps) => allSteps.filter((step) => step.id !== stepId));
+    setSteps((steps) => steps.filter((step) => step.id !== stepId));
   }
 
   function updateStep(stepId, newStep) {
-    setAllSteps((allSteps) =>
-      allSteps.map((step) => {
+    setSteps((steps) =>
+      steps.map((step) => {
         if (step.id === stepId) {
           return { ...step, ...newStep };
         }
@@ -29,20 +29,24 @@ export function StepsProvider({ children }) {
   }
 
   function getStep(stepId) {
-    return allSteps.find((step) => step.id === stepId);
+    return steps.find((step) => step.id === stepId);
   }
 
   function getSteps() {
-    return allSteps;
+    return steps;
+  }
+
+  function setAllSteps(steps) {
+    setSteps(steps);
   }
 
   const value = {
-    allSteps,
     addStep,
     removeStep,
     updateStep,
     getStep,
     getSteps,
+    setAllSteps,
   };
 
   return <StepContext.Provider value={value}>{children}</StepContext.Provider>;

@@ -3,6 +3,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import React from "react";
 import ProjectDocumentation from "./src/ProjectDocumentation";
 import TextBoxPage from "./src/TextBoxPage";
+import TextBoxPageNew from "./src/TextBoxPageNew";
 import { StepsProvider } from "./src/StepsContext";
 
 const RootNavigation = () => {
@@ -12,8 +13,13 @@ const RootNavigation = () => {
       <Documentation.Screen
         name="Documentation"
         component={ProjectDocumentation}
+        options={{ title: "Vanderbilt TOM App by Change++" }}
       />
-      <Documentation.Screen name="TextBoxPage" component={TextBoxPage} />
+      <Documentation.Screen
+        name="TextBoxPageNew"
+        component={TextBoxPageNew}
+        options={{ headerLeft: null, title: "Vanderbilt TOM App by Change++" }}
+      />
     </Documentation.Navigator>
   );
 

@@ -11,31 +11,37 @@ import {
   FlatList,
   Button,
 } from "react-native";
-import { ScrollView } from "react-native-gesture-handler";
+import { useSteps } from "./StepsContext";
 
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
-var randomWords = require("random-words");
 
 const ProjectDocumentation = ({ navigation }) => {
+  const { addStep, getSteps, setAllSteps } = useSteps();
   let emptyStep = {
     id: Date.now(),
-    instructions: "",
     order: 1,
+    name: "",
+    instructions: "",
   };
   const [name, setName] = useState("");
   const [purpose, setPurpose] = useState("");
   const [description, setDescription] = useState("");
   const [history, setHistory] = useState("");
   const [feedback, setFeedback] = useState("");
-  const [steps, setSteps] = useState([]);
+  const [steps, setSteps] = useState(getSteps());
+
+  useEffect(() => {
+    setSteps(getSteps());
+  });
 
   // adding new steps -- this works
   const individualStepAddition = () => {
     emptyStep.order = steps.length + 1;
     emptyStep.id = Date.now();
-    emptyStep.instructions = randomWords({ exactly: 2, join: " " });
-    setSteps([...steps, emptyStep]);
+    const newSteps = [...steps, emptyStep];
+    setSteps(newSteps);
+    setAllSteps(newSteps);
   };
 
   // removing steps -- this works
@@ -49,6 +55,7 @@ const ProjectDocumentation = ({ navigation }) => {
     });
     newSteps = newSteps.filter((step) => step.id !== id);
     setSteps(newSteps);
+    setAllSteps(newSteps);
   };
 
   // incrementing the order of the steps
@@ -68,6 +75,7 @@ const ProjectDocumentation = ({ navigation }) => {
       }
     });
     setSteps(newSteps);
+    setAllSteps(newSteps);
   };
 
   // decrementing the order of the steps
@@ -88,11 +96,15 @@ const ProjectDocumentation = ({ navigation }) => {
       }
     });
     setSteps(newSteps);
+    setAllSteps(newSteps);
   };
 
   return (
     <SafeAreaView style={{ flex: 1, flexDirection: "column" }}>
       <View style={{ top: 15 }}>
+        <Text style={styles.header}>
+          Vanderbilt TOM Makeathon Project Documentation
+        </Text>
         <TextInput
           placeholder="Project Name"
           style={styles.projectName}
@@ -100,46 +112,7 @@ const ProjectDocumentation = ({ navigation }) => {
           value={name}
         />
       </View>
-      <View style={{ top: 25, bottom: 25 }}>
-        <TouchableOpacity
-          style={styles.purposeInput}
-          onPress={() =>
-            navigation.navigate("TextBoxPage", {
-              fieldName: "Purpose of the device",
-              placeholder: "Explain the purpose of the device here",
-              value: purpose,
-              setValue: setPurpose,
-            })
-          }
-        >
-          <Text style={{ fontSize: 17, color: "#C0C0C0" }}>
-            Purpose of Device
-          </Text>
-        </TouchableOpacity>
-        <View style={{ marginBottom: 17 }}>
-          <View style={styles.thinBar}></View>
-        </View>
-
-        <TouchableOpacity
-          style={styles.purposeInput}
-          onPress={() =>
-            navigation.navigate("TextBoxPage", {
-              fieldName: "Physical Description",
-              placeholder:
-                "Explain the physical description of the device here",
-              value: description,
-              setValue: setDescription,
-            })
-          }
-        >
-          <Text style={{ fontSize: 17, color: "#C0C0C0" }}>
-            Physical Description
-          </Text>
-        </TouchableOpacity>
-        <View style={{ marginBottom: 17 }}>
-          <View style={styles.thinBar}></View>
-        </View>
-      </View>
+      <View style={{ top: 25, bottom: 25 }}></View>
 
       <Text
         style={{
@@ -170,8 +143,8 @@ const ProjectDocumentation = ({ navigation }) => {
             style={{
               borderRadius: 50,
               backgroundColor: "#f15d31",
-              width: 50,
-              height: 50,
+              width: 60,
+              height: 60,
               justifyContent: "center",
               alignItems: "center",
             }}
@@ -184,7 +157,7 @@ const ProjectDocumentation = ({ navigation }) => {
         </TouchableOpacity>
       </View>
 
-      <View style={{flex: 1}}>
+      <View style={{ flex: 1 }}>
         <FlatList
           scrollsToTop={true}
           data={steps.sort((a, b) => a.order - b.order)}
@@ -195,7 +168,6 @@ const ProjectDocumentation = ({ navigation }) => {
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => {
             return (
-              // make a nice box for each step
               <View
                 style={{
                   flexDirection: "row",
@@ -211,38 +183,61 @@ const ProjectDocumentation = ({ navigation }) => {
                     borderWidth: 1,
                     borderColor: "#C0C0C0",
                     borderRadius: 10,
+                    padding: 12,
                   }}
                 >
-                  <Text style={{ fontSize: 17, color: "black", padding: 10 }}>
-                    Step {item.order}: {item.instructions}
+                  <Text
+                    style={{
+                      fontSize: 17,
+                      color: "black",
+                      marginBottom: 10,
+                    }}
+                  >
+                    Step {item.order} :{" "}
+                    {item.name ? item.name : "Untitled step"}
                   </Text>
-                  <TouchableOpacity
-                    style={{ position: "absolute", right: 10, top: 10 }}
-                    onPress={() => individualStepRemoval(item.id)}
+                  <View style={styles.thinBar}></View>
+                  {/* put the four icons on a seperate line and space them evenly horizontally */}
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      justifyContent: "space-evenly",
+                      marginTop: 10,
+                    }}
                   >
-                    <Image
-                      style={styles.plus}
-                      source={require("../assets/projects-11/delete.png")}
-                    />
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    style={{ position: "absolute", right: 90, top: 10 }}
-                    onPress={() => decrementOrder(item.id)}
-                  >
-                    <Image
-                      style={styles.plus}
-                      source={require("../assets/projects-11/arrow-up.png")}
-                    />
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    style={{ position: "absolute", right: 50, top: 10 }}
-                    onPress={() => incrementOrder(item.id)}
-                  >
-                    <Image
-                      style={styles.plus}
-                      source={require("../assets/projects-11/arrow-down.png")}
-                    />
-                  </TouchableOpacity>
+                    <TouchableOpacity
+                      onPress={() =>
+                        navigation.navigate("TextBoxPageNew", {
+                          id: item.id,
+                        })
+                      }
+                    >
+                      <Image
+                        style={styles.icons}
+                        source={require("../assets/projects-11/edit.png")}
+                      />
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={() => decrementOrder(item.id)}>
+                      <Image
+                        style={styles.icons}
+                        source={require("../assets/projects-11/arrow-up.png")}
+                      />
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={() => incrementOrder(item.id)}>
+                      <Image
+                        style={styles.icons}
+                        source={require("../assets/projects-11/arrow-down.png")}
+                      />
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      onPress={() => individualStepRemoval(item.id)}
+                    >
+                      <Image
+                        style={styles.icons}
+                        source={require("../assets/projects-11/delete.png")}
+                      />
+                    </TouchableOpacity>
+                  </View>
                 </View>
               </View>
             );
@@ -256,65 +251,25 @@ const ProjectDocumentation = ({ navigation }) => {
 export default ProjectDocumentation;
 
 const styles = StyleSheet.create({
+  header: {
+    fontSize: 15,
+    fontWeight: "bold",
+    textAlign: "center",
+    color: "#00a2d3",
+    marginTop: 10,
+    marginBottom: 20,
+  },
+
   item: {
     padding: 10,
     fontSize: 18,
     height: 44,
   },
 
-  purposeInput: {
-    left: windowWidth * 0.07,
-    fontSize: 17,
-    padding: 2.5,
-    width: windowWidth * 0.86,
-  },
   projectName: {
-    left: windowWidth * 0.07,
-    width: windowWidth * 0.86,
     fontSize: 24,
-    color: "black",
     fontWeight: "bold",
-  },
-  addToolsBox: {
-    width: windowWidth * 0.044,
-    height: windowHeight * 0.021,
-    top: -windowHeight * 0.15,
-    left: windowWidth * 0.896,
-  },
-
-  addTools: {
-    height: windowHeight * 0.02,
-    width: windowWidth * 0.86,
-    left: -windowWidth * 0.826,
-  },
-
-  addPictureBox: {
-    width: windowWidth * 0.25,
-    height: windowHeight * 0.125,
-    left: windowWidth * 0.38,
-    top: -windowHeight * 0.35,
-  },
-
-  addMaterialsBox: {
-    width: windowWidth * 0.044,
-    height: windowHeight * 0.021,
-    top: -windowHeight * 0.14,
-    left: windowWidth * 0.896,
-  },
-
-  addMaterials: {
-    height: windowHeight * 0.02,
-    width: windowWidth * 0.86,
-    left: -windowWidth * 0.826,
-  },
-
-  greenBackground: {
-    width: windowWidth,
-    height: windowHeight * 0.5,
-    // left: 0,
-    top: -windowHeight * 0.03,
-    // position: "relative",
-    // flexDirection: "row",
+    textAlign: "center",
   },
 
   logo: {
@@ -326,26 +281,22 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
 
-  pencil: {
-    width: windowWidth * 0.041,
-    height: windowHeight * 0.02,
-    left: windowWidth * 0.895,
-    top: -windowHeight * 0.2145,
-    position: "relative",
-    flexDirection: "row",
-  },
-
   plusBox: {
-    // width: windowWidth * 0.044,
-    // left: windowWidth * 0.896,
     position: "relative",
     right: 0,
     bottom: 0,
   },
 
   plus: {
-    width: windowWidth * 0.044,
-    height: windowHeight * 0.021,
+    width: 23,
+    height: 23,
+  },
+
+  icons: {
+    // make the icon red
+    tintColor: "#f15d31",
+    width: 20,
+    height: 20,
   },
 
   stepName: {
@@ -357,10 +308,7 @@ const styles = StyleSheet.create({
 
   thinBar: {
     backgroundColor: `rgba(112, 112, 112, 0.3)`,
-    width: "88%",
     height: 1,
-    left: windowWidth * 0.055,
-    top: 5,
   },
 
   uploadImage: {
