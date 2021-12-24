@@ -18,7 +18,7 @@ const RootNavigation = () => {
       <Documentation.Screen
         name="TextBoxPageNew"
         component={TextBoxPageNew}
-        options={{ headerLeft: null, title: "Vanderbilt TOM App by Change++" }}
+        options={{ headerLeft: null, title: "Vanderbilt TOM App by Change++", gestureEnabled: false }}
       />
     </Documentation.Navigator>
   );

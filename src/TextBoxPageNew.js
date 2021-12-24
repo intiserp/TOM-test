@@ -28,7 +28,7 @@ function TextBoxPageNew({ route, navigation }) {
 
   return (
     <SafeAreaView style={{ flex: 1, flexDirection: "column" }}>
-      <View style={{ position: "absolute", top: 10, left: 10 }}>
+      <View style={{ position: "absolute", top: 10, left: 10, zIndex: 999 }}>
         <Header backHandler={backHandler} hasBack={true} />
       </View>
       <View>
@@ -44,6 +44,7 @@ function TextBoxPageNew({ route, navigation }) {
 
         <View style={styles.thinBar}></View>
       </View>
+
       <View>
         <TextInput
           style={{

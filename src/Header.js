@@ -13,9 +13,7 @@ const Header = (props) => {
     <Appbar.Header style={styles.headerContainer}>
       {props.hasBack && <Appbar.BackAction onPress={props.backHandler} />}
 
-      {props.hasCancel && (
-        <Appbar.Action icon="close" onPress={props.cancelHandler} />
-      )}
+      {props.hasCancel && (<Appbar.Action icon="close" onPress={props.cancelHandler} />)}
     </Appbar.Header>
   );
 };
@@ -26,6 +24,8 @@ const styles = StyleSheet.create({
     // bg color should be white with full transparent
     backgroundColor: `rgba(255,255,255,0)`,
     justifyContent: "flex-start",
+    // zindex brings to the front so we can hit button
+    zIndex: 999,
   },
 });
 
